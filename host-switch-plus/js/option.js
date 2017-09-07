@@ -95,7 +95,7 @@ $(function () {
                 if( tags.length ){
                     item.tags = [];
                     $(tags).each(function(i){
-                        if( tags[i] !== '' ) item.tags.push(tags[i]);
+                        if( tags[i] !== '' ) item.tags.push(tags[i]); // trim the tags also
                     });
                 }
 
@@ -115,8 +115,14 @@ $(function () {
     });
 
     $('#tbody-hosts').on('change', 'input', function (e) {
+		var tr = $(this).parents('tr');
         // select_one(this.value)
-        var tr = $(this).parents('tr');
+		if($(".host-checkbox:checked").length){
+			$('.bulkActions').show();
+		} else {
+			$('.bulkActions').hide();
+		}
+
         if ($(this).prop('checked')) {
             tr.addClass('success');
         } else {
@@ -126,13 +132,16 @@ $(function () {
     });
 
     $('#but_del').click(function () {
-        $('input[type=checkbox]:checked').each(function () {
-            model.removeHost(this.value);
-        });
-        $('input[type=checkbox]:checked').parents('tr').remove();
+		if(confirm("Delete selected host records?")){
+			$('input[type=checkbox]:checked').each(function () {
+	            model.removeHost(this.value);
+				$(this).closest("tr").remove();
+	        });
+		}
         return false;
     });
 
+	// Watch .host-checkbox for changes
 
     $('#add_tab').find('a').on('click', function(){
         var target = $(this).data('target');
