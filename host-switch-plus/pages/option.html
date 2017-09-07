@@ -13,16 +13,21 @@
   <body>
   <div class="inner">
     <h1>Host Switch Plus
-        <small>Default: <select id="default"><option value="DIRECT">Direct</option><option value="SYSTEM">System</option></select>
+        <small>Default:
+			<select id="default">
+				<option value="DIRECT">Direct</option>
+				<option value="SYSTEM">System</option>
+			</select>
         &nbsp;&nbsp;
         <label class="checkbox"><input id="status" type="checkbox" value="1" checked><span>Enable</span></label></small>
     </h1>
 
     <nav id="add_tab" class="tabNavs">
-        <a href="#" data-target="#addForm" class="current" title="新增 Hosts 配置">Add</a>
-        <a href="#" data-target="#bulkForm" title="批量添加">Bulk Add</a>
-        <a href="#" data-target="#list" title="管理" id="listBtn">Hosts</a>
+        <a href="#" data-target="#addForm" class="current" title="Add Host">Add</a>
+        <a href="#" data-target="#bulkForm" title="Bulk Add">Bulk Add</a>
+        <a href="#" data-target="#list" title="Manage hosts" id="listBtn">Hosts</a>
     </nav>
+
     <div class="tabConts">
         <form role="form" id="addForm" class="tabCont current">
             <div id="formNote" class="formNote" style="display:none;"></div>
@@ -42,17 +47,18 @@
             <div class="field">
                 <label>Tags：</label>
                 <span id="div_labels" class="checkboxs"></span>
-                <input type="text" id="add_labels" placeholder="Test,Dev,Shadowsockets,翻墙">
+                <input type="text" id="add_labels" placeholder="Test,Dev,Shadowsockets">
             </div>
+
             <div class="field">
                 <label for="note">Note：</label>
                 <input type="text" placeholder="Note" id="note">
             </div>
+
             <div class="field">
                 <label for="note">Order：</label>
-                <input type="number" placeholder="Order" id="order" value="1"> <span>The greater is preferred. 排序：数值越大越靠前，代理匹配时优先级越高</span>
+                <input type="number" placeholder="Order" id="order" value="1"> <span>A higher number is equal to a greater precedence.</span>
             </div>
-
 
             <div class="field">
                 <label></label>
@@ -61,15 +67,14 @@
         </form>
         <form action="#" id="bulkForm" class="tabCont bulkForm">
             <div class="field textareaField">
-                <label for="bulkAdd"><strong>Hosts:</strong>
-                    <small>One rule every line. 每行一条记录； 每条分别为 IP, Domain, Tags, Note，使用空格隔开；多个标签使用英文逗号,隔开
-                        <br>For example:
-                        <br>#支持泛域名匹配模式
-                        <br>192.168.1.1 www.google.com
-                        <br>192.168.1.1 *.xyz.com test
-                        <br>127.0.0.1:8888 www.domain.com dev
-                    </small>
-                </label>
+                <label for="bulkAdd"><strong>Hosts:</strong></label>
+                <p>One rule for each line, with each value space delimited ( IP Address - Domain Name - Tags[optional, comma delimited] - Note[optional]). Wildcards are acceptable.</p>
+                <p>For example:</p>
+<pre>
+192.168.1.1 www.google.com
+192.168.1.1 *.xyz.com test
+127.0.0.1:8888 www.domain.com dev
+</pre>
                 <textarea id="bulkAdd"></textarea>
             </div>
             <div class="btnLine">
@@ -78,7 +83,7 @@
         </form>
         <div id="list" class="tabCont">
             <form action="#" id="searchForm" class="search">
-                <input type="text" id="input_search" class="form-control input-sm" placeholder="Search Domain,IP,Tag.(ip:192. or tags:dev)" value="">
+				<input type="text" id="input_search" class="form-control input-sm" placeholder="Search by domain name, IP address, or tag.(ip:192. or tags:dev)" value="">
             </form>
             <div class="filter">Tags: <span id="label-filter" class="noBulk"></span></div>
             <table id="main-table" class="table table-hover table-condensed">
@@ -103,14 +108,16 @@
     </div>
     <script id="host-item" type="text/template">
         <tr id="host-{=id}" data-id="{=id}" title="Updated at: {=uptime}">
-            <td><input name="id[]" value="{=id}" type="checkbox"></td>
+            <td><input name="id[]" value="{=id}" type="checkbox" class="host-checkbox"></td>
             <td>{=ip}</td>
             <td>{=domain}</td>
             <td class="tags">{=tags}</td>
             <td class="note">{=note}</td>
             <td>{=order}</td>
             <td>
-                <span class="actions"><a href="#" data-id="{=id}" class="delete">Delete</a> <i class="I">|</i> <a href="#" data-id="{=id}" class="edit">Edit</a></span>
+                <span class="actions">
+					<a href="#" data-id="{=id}" class="delete">Delete</a> <i class="I">|</i> <a href="#" data-id="{=id}" class="edit">Edit</a>
+				</span>
             </td>
         </tr>
     </script>
